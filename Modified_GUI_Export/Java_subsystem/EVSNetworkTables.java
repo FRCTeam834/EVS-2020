@@ -81,7 +81,7 @@ public class EVSNetworkTables extends Subsystem {
 
   public double[][] getAllObjects() {
 
-    double[][] allValues = new double[12][7];
+    double[][] allValues = new double[12][8];
     return allValues;
 
   }
@@ -102,12 +102,12 @@ public class EVSNetworkTables extends Subsystem {
     Power_Cell_inUse8 = Power_Cell8.getEntry(inUse);
     Power_Cell_inUse9 = Power_Cell9.getEntry(inUse);
 
-    double[][] Power_CellValues = new double[10][7]; 
+    double[][] Power_CellValues = new double[10][8]; 
 
     // if inUse is true, store values and check next table
 
     if (Power_Cell_inUse0.getBoolean(false) == true) {
-      double Power_Cell0_values_array[] = Power_Cell_values0.getDoubleArray(new double[6]);
+      double Power_Cell0_values_array[] = Power_Cell_values0.getDoubleArray(new double[7]);
 
       for (int i = 0; i < 7; i++) {
         if (i == 0) {
@@ -119,7 +119,7 @@ public class EVSNetworkTables extends Subsystem {
       }
 
         if (Power_Cell_inUse1.getBoolean(false) == true) {
-          double Power_Cell1_values_array[] = Power_Cell_values1.getDoubleArray(new double[6]);
+          double Power_Cell1_values_array[] = Power_Cell_values1.getDoubleArray(new double[7]);
 
           for (int i = 0; i < 7; i++) {
             if (i == 0) {
@@ -131,7 +131,7 @@ public class EVSNetworkTables extends Subsystem {
           }
 
             if (Power_Cell_inUse2.getBoolean(false) == true) {
-              double Power_Cell2_values_array[] = Power_Cell_values2.getDoubleArray(new double[6]);
+              double Power_Cell2_values_array[] = Power_Cell_values2.getDoubleArray(new double[7]);
 
               for (int i = 0; i < 7; i++) {
                 if (i == 0) {
@@ -143,7 +143,7 @@ public class EVSNetworkTables extends Subsystem {
               }
 
                 if (Power_Cell_inUse3.getBoolean(false) == true) {
-                  double Power_Cell3_values_array[] = Power_Cell_values3.getDoubleArray(new double[6]);
+                  double Power_Cell3_values_array[] = Power_Cell_values3.getDoubleArray(new double[7]);
 
                   for (int i = 0; i < 7; i++) {
                     if (i == 0) {
@@ -155,7 +155,7 @@ public class EVSNetworkTables extends Subsystem {
                   }
 
                     if (Power_Cell_inUse4.getBoolean(false) == true) {
-                      double Power_Cell4_values_array[] = Power_Cell_values4.getDoubleArray(new double[6]);
+                      double Power_Cell4_values_array[] = Power_Cell_values4.getDoubleArray(new double[7]);
 
                       for (int i = 0; i < 7; i++) {
                         if (i == 0) {
@@ -167,7 +167,7 @@ public class EVSNetworkTables extends Subsystem {
                       }
 
                         if (Power_Cell_inUse5.getBoolean(false) == true) {
-                          double Power_Cell5_values_array[] = Power_Cell_values5.getDoubleArray(new double[6]);
+                          double Power_Cell5_values_array[] = Power_Cell_values5.getDoubleArray(new double[7]);
 
                           for (int i = 0; i < 7; i++) {
                             if (i == 0) {
@@ -179,7 +179,7 @@ public class EVSNetworkTables extends Subsystem {
                           }
 
                             if (Power_Cell_inUse6.getBoolean(false) == true) {
-                              double Power_Cell6_values_array[] = Power_Cell_values6.getDoubleArray(new double[6]);
+                              double Power_Cell6_values_array[] = Power_Cell_values6.getDoubleArray(new double[7]);
 
                               for (int i = 0; i < 7; i++) {
                                 if (i == 0) {
@@ -191,7 +191,7 @@ public class EVSNetworkTables extends Subsystem {
                               }
 
                                 if (Power_Cell_inUse7.getBoolean(false) == true) {
-                                  double Power_Cell7_values_array[] = Power_Cell_values7.getDoubleArray(new double[6]);
+                                  double Power_Cell7_values_array[] = Power_Cell_values7.getDoubleArray(new double[7]);
 
                                   for (int i = 0; i < 7; i++) {
                                     if (i == 0) {
@@ -203,7 +203,7 @@ public class EVSNetworkTables extends Subsystem {
                                   }
 
                                     if (Power_Cell_inUse8.getBoolean(false) == true) {
-                                      double Power_Cell8_values_array[] = Power_Cell_values8.getDoubleArray(new double[6]);
+                                      double Power_Cell8_values_array[] = Power_Cell_values8.getDoubleArray(new double[7]);
 
                                       for (int i = 0; i < 7; i++) {
                                         if (i == 0) {
@@ -215,7 +215,7 @@ public class EVSNetworkTables extends Subsystem {
                                       }
 
                                         if (Power_Cell_inUse9.getBoolean(false) == true) {
-                                          double Power_Cell9_values_array[] = Power_Cell_values9.getDoubleArray(new double[6]);
+                                          double Power_Cell9_values_array[] = Power_Cell_values9.getDoubleArray(new double[7]);
 
                                           for (int i = 0; i < 7; i++) {
                                             if (i == 0) {
@@ -336,12 +336,12 @@ public class EVSNetworkTables extends Subsystem {
 
     Goal_inUse0 = Goal0.getEntry(inUse);
 
-    double[][] GoalValues = new double[1][7]; 
+    double[][] GoalValues = new double[1][8]; 
 
     // if inUse is true, store values and check next table
 
     if (Goal_inUse0.getBoolean(false) == true) {
-      double Goal0_values_array[] = Goal_values0.getDoubleArray(new double[6]);
+      double Goal0_values_array[] = Goal_values0.getDoubleArray(new double[7]);
 
       for (int i = 0; i < 7; i++) {
         if (i == 0) {
