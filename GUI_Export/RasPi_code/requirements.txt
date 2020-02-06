@@ -1,2 +1,2 @@
-pyfrc
+pyfrc==2019.1.0
 pynetworktables

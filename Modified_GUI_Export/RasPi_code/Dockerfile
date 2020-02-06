@@ -1,2 +1,2 @@
 FROM alwaysai/edgeiq:0.11.0
-RUN pip3 install pyfrc pynetworktables
+#RUN sudo apt install python3-opencv

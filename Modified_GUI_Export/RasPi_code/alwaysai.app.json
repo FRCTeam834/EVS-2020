@@ -3,6 +3,7 @@
     "start": "python app.py"
   },
   "models": {
-    "alwaysai/mobilenet_ssd": 1
+    "alwaysai/mobilenet_ssd": 1,
+    "CAP1Sup/FRC_2020_834": 1
   }
 }

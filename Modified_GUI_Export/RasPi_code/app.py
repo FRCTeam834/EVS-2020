@@ -2,7 +2,7 @@ import time
 import edgeiq
 import pyfrc
 from networktables import NetworkTables
-from cscore import CameraServer
+#from cscore import CameraServer
 import logging
 import numpy as np
 
@@ -56,7 +56,7 @@ def main():
     # Setup EdgeIQ 
     # ! TODO: Change Model
     obj_detect = edgeiq.ObjectDetection(
-            "alwaysai/mobilenet_ssd")
+            "CAP1Sup/FRC_2020_834")
     obj_detect.load(engine=edgeiq.Engine.DNN_OPENVINO)
  
 
@@ -73,7 +73,9 @@ def main():
     tracker = edgeiq.CentroidTracker(deregister_frames=20, max_distance=50)
 
     # Setup video cam feed
-    outputStream = cs.putVideo("Vision_Out", 300, 300)
+    #cs = CameraServer.getInstance()
+    #cs.enableLogging()
+    #outputStream = cs.putVideo("Vision_Out", 300, 300)
 
     try:
         with edgeiq.WebcamVideoStream(cam=0) as video_stream: 
@@ -157,7 +159,7 @@ def main():
                     fps.update()
 
                 # Put stream on regardless of vision activation
-                outputStream.putFrame(frame)
+                #outputStream.putFrame(frame)
     finally:
         fps.stop()
         print("elapsed time: {:.2f}".format(fps.get_elapsed_seconds()))
