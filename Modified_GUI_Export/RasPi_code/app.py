@@ -1,8 +1,8 @@
 import time
 import edgeiq
-import pyfrc
+#import pyfrc
 from networktables import NetworkTables
-#from cscore import CameraServer
+from cscore import CameraServer
 import logging
 import numpy as np
 
@@ -73,9 +73,9 @@ def main():
     tracker = edgeiq.CentroidTracker(deregister_frames=20, max_distance=50)
 
     # Setup video cam feed
-    #cs = CameraServer.getInstance()
-    #cs.enableLogging()
-    #outputStream = cs.putVideo("Vision_Out", 300, 300)
+    cs = CameraServer.getInstance()
+    cs.enableLogging()
+    outputStream = cs.putVideo("Vision_Out", 300, 300)
 
     try:
         with edgeiq.WebcamVideoStream(cam=0) as video_stream: 
@@ -97,7 +97,7 @@ def main():
                 frame = video_stream.read()
 
                 # Check to see if the camera should be processing images
-                if (EVS.getBoolean('run_vision_processing')):
+                if (EVS.getBoolean('run_vision_processing', True)):
                     
                     # Process the frame
                     results = obj_detect.detect_objects(frame, confidence_level = default_conf_thres)
@@ -108,6 +108,9 @@ def main():
                     # Counters - they reset after every frame in the while loop 
                     Power_CellCounter = 0 
                     GoalCounter = 0 
+
+                    # Define the collection variable
+                    predictions = []
             
                     # Update the EVS NetworkTable with new values
                     for (object_id, prediction) in objects.items():
@@ -159,7 +162,7 @@ def main():
                     fps.update()
 
                 # Put stream on regardless of vision activation
-                #outputStream.putFrame(frame)
+                outputStream.putFrame(frame)
     finally:
         fps.stop()
         print("elapsed time: {:.2f}".format(fps.get_elapsed_seconds()))

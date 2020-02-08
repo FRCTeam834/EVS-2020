@@ -1,4 +1,4 @@
-pyfrc==2019.1.0
+#pyfrc
 pynetworktables
-#pkgconfig
-#robotpy-cscore
+pkgconfig
+robotpy-cscore

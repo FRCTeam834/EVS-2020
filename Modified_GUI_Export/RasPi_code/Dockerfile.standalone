@@ -1,4 +1,5 @@
-FROM alwaysai/edgeiq:0.11.0
+#FROM alwaysai/edgeiq:0.11.0
+FROM alwaysai/edgeiq-dev:arm-0.11.1.dev21-g701969d
 WORKDIR /app
 COPY . ./
 RUN pip3 install -r requirements.txt
