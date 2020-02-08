@@ -25,6 +25,7 @@ def main():
 
     # Set default run_vision_tracking value
     EVS.putBoolean('run_vision_tracking', True)
+    EVS.putNumber('confidence_thres', default_conf_thres)
 
     # Create sub-tables and append them to arrays
     Power_CellTables = []
@@ -97,10 +98,10 @@ def main():
                 frame = video_stream.read()
 
                 # Check to see if the camera should be processing images
-                if (EVS.getBoolean('run_vision_processing', True)):
+                if (EVS.getBoolean('run_vision_tracking', True)):
                     
                     # Process the frame
-                    results = obj_detect.detect_objects(frame, confidence_level = default_conf_thres)
+                    results = obj_detect.detect_objects(frame, confidence_level = EVS.getNumber('confidence_thres', default_conf_thres))
 
                     # Update the object tracking
                     objects = tracker.update(results.predictions)
