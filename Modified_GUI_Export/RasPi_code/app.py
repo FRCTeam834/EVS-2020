@@ -9,6 +9,14 @@ import numpy as np
 # Constant for the default confidence (0 being 0% sure and 1 being 100% sure)
 default_conf_thres = .75
 
+# Setup color values for objects (in BGR format), and then combine them to a single scheme
+default_color = (0, 0, 255)
+color_map = {
+    "Power_Cell": (0, 255, 255),
+    "Goal": (255, 0, 0)
+  }
+colors = [color_map.get(label, default_color) for label in classifier.labels]
+
 def main():
     # Allow Rio to boot and configure network
     time.sleep(5.0)
@@ -157,7 +165,7 @@ def main():
                     EVS.putBoolean('checked', False)
 
                     # Do the frame labeling last, as it is lower priority
-                    frame = edgeiq.markup_image(frame, results.predictions, colors=obj_detect.colors)
+                    frame = edgeiq.markup_image(frame, results.predictions, colors=colors)
 
                     # Update the FPS tracker
                     fps.update()
