@@ -1,6 +1,5 @@
 import time
 import edgeiq
-#import pyfrc
 from networktables import NetworkTables
 from cscore import CameraServer
 import logging
@@ -9,13 +8,6 @@ import numpy as np
 # Constant for the default confidence (0 being 0% sure and 1 being 100% sure)
 default_conf_thres = .75
 
-# Setup color values for objects (in BGR format), and then combine them to a single scheme
-default_color = (0, 0, 255)
-color_map = {
-    "Power_Cell": (0, 255, 255),
-    "Goal": (255, 0, 0)
-  }
-colors = [color_map.get(label, default_color) for label in classifier.labels]
 
 def main():
     # Allow Rio to boot and configure network
@@ -63,10 +55,17 @@ def main():
     GoalTables.append(Goal0)
 
     # Setup EdgeIQ 
-    # ! TODO: Change Model
     obj_detect = edgeiq.ObjectDetection(
-            "CAP1Sup/FRC_2020_834")
+            "CAP1Sup/FRC_2020_834_v2")
     obj_detect.load(engine=edgeiq.Engine.DNN_OPENVINO)
+
+    # Setup color values for objects (in BGR format), and then combine them to a single scheme
+    default_color = (0, 0, 255)
+    color_map = {
+        "Power_Cell": (0, 255, 255),
+        "Goal": (255, 0, 0)
+    }
+    colors = [color_map.get(label, default_color) for label in obj_detect.labels]
  
 
     # Print out info

@@ -3,5 +3,3 @@
 
 # Beta branch (for cscore support)
 FROM alwaysai/edgeiq-dev:arm-0.11.1.dev21-g701969d
-
-#RUN sudo apt install python3-opencv

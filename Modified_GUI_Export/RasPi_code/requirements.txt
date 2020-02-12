@@ -1,4 +1,4 @@
-#pyfrc
+# A "aai app exec pip wheel -r requirements.txt -w wheels/" can be run before building the Docker to greatly increase speed
 pynetworktables
 pkgconfig
 robotpy-cscore
