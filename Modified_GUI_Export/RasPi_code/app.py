@@ -6,7 +6,7 @@ import logging
 import numpy as np
 
 # Constant for the default confidence (0 being 0% sure and 1 being 100% sure)
-default_conf_thres = .75
+default_conf_thres = .25
 
 
 def main():
@@ -56,7 +56,7 @@ def main():
 
     # Setup EdgeIQ 
     obj_detect = edgeiq.ObjectDetection(
-            "CAP1Sup/FRC_2020_834_v2")
+            "alwaysai/frc_2020_834") #CAP1Sup/FRC_2020_834_v2
     obj_detect.load(engine=edgeiq.Engine.DNN_OPENVINO)
 
     # Setup color values for objects (in BGR format), and then combine them to a single scheme
@@ -142,23 +142,28 @@ def main():
                         # Sort results into their respective classes
                         if prediction.label == "Power_Cell":
         
-                            Power_CellTables[Power_CellCounter].putNumberArray('values', numValuesArray)
-                            # Boolean asks to update
-                            Power_CellTables[Power_CellCounter].putBoolean('inUse', True)
+                            if (Power_CellCounter < 9):
+                                Power_CellTables[Power_CellCounter].putNumberArray('values', numValuesArray)
+                                # Boolean asks to update
+                                Power_CellTables[Power_CellCounter].putBoolean('inUse', True)
 
                             Power_CellCounter += 1 
 
                         elif prediction.label == "Goal":
-        
-                            GoalTables[GoalCounter].putNumberArray('values', numValuesArray)
-                            # Boolean asks to update
-                            GoalTables[GoalCounter].putBoolean('inUse', True)
+                            
+                            if (GoalCounter < 1):
+                                GoalTables[GoalCounter].putNumberArray('values', numValuesArray)
+                                # Boolean asks to update
+                                GoalTables[GoalCounter].putBoolean('inUse', True)
 
                             GoalCounter += 1 
 
                     # Sets the value after the last value to false. The Rio will stop when it finds a False
-                    Power_CellTables[Power_CellCounter].putBoolean('inUse', False)
-                    GoalTables[GoalCounter].putBoolean('inUse', False)
+                    if (Power_CellCounter < 9):
+                        Power_CellTables[Power_CellCounter].putBoolean('inUse', False)
+                    
+                    if (GoalCounter < 1):
+                        GoalTables[GoalCounter].putBoolean('inUse', False)
 
                     # Notify the Rio that vision processing is done, and the data is valid again
                     EVS.putBoolean('checked', False)
