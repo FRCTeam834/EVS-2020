@@ -84,22 +84,50 @@ public class EVSNetworkTables extends SubsystemBase {
 
   }
 
-  public ArrayList<ArrayList<Double>> getArray() {
+  public ArrayList<ArrayList<Double>> getPowerCellArray() {
 
-    ArrayList<ArrayList<Double>> visionArray = new ArrayList<ArrayList<Double>>();
+    ArrayList<ArrayList<Double>> visionArray = new ArrayList<ArrayList<Double>>(10);
+    visionArray.add(new ArrayList<Double>());
+    visionArray.add(new ArrayList<Double>());
+    visionArray.add(new ArrayList<Double>());
+    visionArray.add(new ArrayList<Double>());
+    visionArray.add(new ArrayList<Double>());
+    visionArray.add(new ArrayList<Double>());
+    visionArray.add(new ArrayList<Double>());
+    visionArray.add(new ArrayList<Double>());
+    visionArray.add(new ArrayList<Double>());
+    visionArray.add(new ArrayList<Double>());
 
-    if (getVisionTable().getEntry("checked").getBoolean(false)) {
+    //if (getVisionTable().getEntry("checked").getBoolean(false)) {
 
-      //Start if statement
+    //Start if statement
 
-      if (getVisionTable().getSubTable("Power_Cell0").getEntry("inUse").getBoolean(false)) {
+    if (getVisionTable().getSubTable("Power_Cell0").getEntry("inUse").getBoolean(true)) {
 
-        double powerCellArray[] = getVisionTable().getSubTable("Power_Cell0").getEntry("values")
-            .getDoubleArray(new double[6]);
+      System.out.println("GetEntryAsString:");
+      System.out.println(getVisionTable().getSubTable("Power_Cell0").getEntry("inUse").getType());
 
-        ArrayList<Double> vals = new ArrayList<Double>();
+      double powerCellArray[] = getVisionTable().getSubTable("Power_Cell0").getEntry("values")
+          .getDoubleArray(new double[7]);
 
-        for (int i = 0; i < 6; i++) {
+      ArrayList<Double> vals = new ArrayList<Double>();
+
+      System.out.println("I got past the if statement!!!\n\n\n");
+      System.out.println(powerCellArray);
+      for (int i = 0; i < 7; i++) {
+
+        vals.add(powerCellArray[i]);
+
+      }
+
+      visionArray.set(0, vals);
+
+      if (getVisionTable().getSubTable("Power_Cell1").getEntry("inUse").getBoolean(true)) {
+
+        powerCellArray = getVisionTable().getSubTable("Power_Cell1").getEntry("values").getDoubleArray(new double[7]);
+
+        vals = new ArrayList<Double>();
+        for (int i = 0; i < 7; i++) {
 
           vals.add(powerCellArray[i]);
 
@@ -107,12 +135,12 @@ public class EVSNetworkTables extends SubsystemBase {
 
         visionArray.set(1, vals);
 
-        if (getVisionTable().getSubTable("Power_Cell1").getEntry("inUse").getBoolean(false)) {
+        if (getVisionTable().getSubTable("Power_Cell2").getEntry("inUse").getBoolean(true)) {
 
-          powerCellArray = getVisionTable().getSubTable("Power_Cell1").getEntry("values").getDoubleArray(new double[6]);
+          powerCellArray = getVisionTable().getSubTable("Power_Cell2").getEntry("values").getDoubleArray(new double[7]);
 
           vals = new ArrayList<Double>();
-          for (int i = 0; i < 6; i++) {
+          for (int i = 0; i < 7; i++) {
 
             vals.add(powerCellArray[i]);
 
@@ -120,136 +148,156 @@ public class EVSNetworkTables extends SubsystemBase {
 
           visionArray.set(2, vals);
 
-          if (getVisionTable().getSubTable("Power_Cell2").getEntry("inUse").getBoolean(false)) {
+          if (getVisionTable().getSubTable("Power_Cell3").getEntry("inUse").getBoolean(true)) {
 
-            powerCellArray = getVisionTable().getSubTable("Power_Cell2").getEntry("values")
-                .getDoubleArray(new double[6]);
+            powerCellArray = getVisionTable().getSubTable("Power_Cell3").getEntry("values")
+                .getDoubleArray(new double[7]);
 
             vals = new ArrayList<Double>();
-            for (int i = 0; i < 6; i++) {
+            for (int i = 0; i < 7; i++) {
 
               vals.add(powerCellArray[i]);
 
             }
 
-            visionArray.add(vals);
+            visionArray.set(3, vals);
 
-            if (getVisionTable().getSubTable("Power_Cell3").getEntry("inUse").getBoolean(false)) {
+            if (getVisionTable().getSubTable("Power_Cell4").getEntry("inUse").getBoolean(true)) {
 
-              powerCellArray = getVisionTable().getSubTable("Power_Cell3").getEntry("values")
-                  .getDoubleArray(new double[6]);
+              powerCellArray = getVisionTable().getSubTable("Power_Cell4").getEntry("values")
+                  .getDoubleArray(new double[7]);
 
               vals = new ArrayList<Double>();
-              for (int i = 0; i < 6; i++) {
+              for (int i = 0; i < 7; i++) {
 
                 vals.add(powerCellArray[i]);
 
               }
 
-              visionArray.set(3, vals);
+              visionArray.set(4, vals);
 
-              if (getVisionTable().getSubTable("Power_Cell4").getEntry("inUse").getBoolean(false)) {
+              if (getVisionTable().getSubTable("Power_Cell5").getEntry("inUse").getBoolean(true)) {
 
-                powerCellArray = getVisionTable().getSubTable("Power_Cell4").getEntry("values")
-                    .getDoubleArray(new double[6]);
+                powerCellArray = getVisionTable().getSubTable("Power_Cell5").getEntry("values")
+                    .getDoubleArray(new double[7]);
 
                 vals = new ArrayList<Double>();
-                for (int i = 0; i < 6; i++) {
+                for (int i = 0; i < 7; i++) {
 
                   vals.add(powerCellArray[i]);
 
                 }
 
-                visionArray.set(4, vals);
+                visionArray.set(5, vals);
 
-                if (getVisionTable().getSubTable("Power_Cell5").getEntry("inUse").getBoolean(false)) {
+                if (getVisionTable().getSubTable("Power_Cell6").getEntry("inUse").getBoolean(true)) {
 
-                  powerCellArray = getVisionTable().getSubTable("Power_Cell5").getEntry("values")
-                      .getDoubleArray(new double[6]);
+                  powerCellArray = getVisionTable().getSubTable("Power_Cell6").getEntry("values")
+                      .getDoubleArray(new double[7]);
 
                   vals = new ArrayList<Double>();
-                  for (int i = 0; i < 6; i++) {
+                  for (int i = 0; i < 7; i++) {
 
                     vals.add(powerCellArray[i]);
 
                   }
 
-                  visionArray.set(5, vals);
+                  visionArray.set(6, vals);
 
-                  if (getVisionTable().getSubTable("Power_Cell6").getEntry("inUse").getBoolean(false)) {
+                  if (getVisionTable().getSubTable("Power_Cell7").getEntry("inUse").getBoolean(true)) {
 
-                    powerCellArray = getVisionTable().getSubTable("Power_Cell6").getEntry("values")
-                        .getDoubleArray(new double[6]);
+                    powerCellArray = getVisionTable().getSubTable("Power_Cell7").getEntry("values")
+                        .getDoubleArray(new double[7]);
 
                     vals = new ArrayList<Double>();
-                    for (int i = 0; i < 6; i++) {
+                    for (int i = 0; i < 7; i++) {
 
                       vals.add(powerCellArray[i]);
 
                     }
 
-                    visionArray.set(6, vals);
+                    visionArray.set(7, vals);
 
-                    if (getVisionTable().getSubTable("Power_Cell7").getEntry("inUse").getBoolean(false)) {
+                    if (getVisionTable().getSubTable("Power_Cell8").getEntry("inUse").getBoolean(true)) {
 
-                      powerCellArray = getVisionTable().getSubTable("Power_Cell7").getEntry("values")
-                          .getDoubleArray(new double[6]);
+                      powerCellArray = getVisionTable().getSubTable("Power_Cell8").getEntry("values")
+                          .getDoubleArray(new double[7]);
 
                       vals = new ArrayList<Double>();
-                      for (int i = 0; i < 6; i++) {
+                      for (int i = 0; i < 7; i++) {
 
                         vals.add(powerCellArray[i]);
 
                       }
 
-                      visionArray.set(7, vals);
+                      visionArray.set(8, vals);
 
-                      if (getVisionTable().getSubTable("Power_Cell8").getEntry("inUse").getBoolean(false)) {
+                      if (getVisionTable().getSubTable("Power_Cell9").getEntry("inUse").getBoolean(true)) {
 
-                        powerCellArray = getVisionTable().getSubTable("Power_Cell8").getEntry("values")
-                            .getDoubleArray(new double[6]);
+                        powerCellArray = getVisionTable().getSubTable("Power_Cell9").getEntry("values")
+                            .getDoubleArray(new double[7]);
 
                         vals = new ArrayList<Double>();
-                        for (int i = 0; i < 6; i++) {
+                        for (int i = 0; i < 7; i++) {
 
                           vals.add(powerCellArray[i]);
 
                         }
 
-                        visionArray.set(8, vals);
+                        visionArray.set(9, vals);
 
-                        if (getVisionTable().getSubTable("Power_Cell9").getEntry("inUse").getBoolean(false)) {
+                      }
+                    } //End 9
+                  } //End 8
+                } //End 7
+              } //End 6
+            } //End 5
+          } //End 4
+        } //End 3
+      } //End 2
+    } //End 1
+      //End if statement
 
-                          powerCellArray = getVisionTable().getSubTable("Power_Cell9").getEntry("values")
-                              .getDoubleArray(new double[6]);
-
-                          vals = new ArrayList<Double>();
-                          for (int i = 0; i < 6; i++) {
-
-                            vals.add(powerCellArray[i]);
-
-                          }
-
-                          visionArray.set(9, vals);
-
-                        }
-                      } //End 9
-                    } //End 8
-                  } //End 7
-                } //End 6
-              } //End 5
-            } //End 4
-          } //End 3
-        } //End 2
-      } //End 1
-        //End if statement
-
-    }
+    //}
 
     return visionArray;
 
   }
 
+  public ArrayList<ArrayList<Double>> getGoalArray() {
+
+    ArrayList<ArrayList<Double>> visionArray = new ArrayList<ArrayList<Double>>(10); //We gotta initialize something in each spot
+    visionArray.add(new ArrayList<Double>());
+    visionArray.add(new ArrayList<Double>());
+    visionArray.add(new ArrayList<Double>());
+    visionArray.add(new ArrayList<Double>());
+    visionArray.add(new ArrayList<Double>());
+    visionArray.add(new ArrayList<Double>());
+    visionArray.add(new ArrayList<Double>());
+    visionArray.add(new ArrayList<Double>());
+    visionArray.add(new ArrayList<Double>());
+    visionArray.add(new ArrayList<Double>());
+    //if (getVisionTable().getEntry("checked").getBoolean(false)) {
+
+    //Start if statement
+
+    if (getVisionTable().getSubTable("Goal0").getEntry("inUse").getBoolean(false)) {
+
+      double goalArray[] = getVisionTable().getSubTable("Goal0").getEntry("values").getDoubleArray(new double[7]);
+
+      ArrayList<Double> vals = new ArrayList<Double>();
+
+      for (int i = 0; i < 7; i++) {
+
+        vals.add(goalArray[i]);
+
+      }
+
+      visionArray.set(0, vals);
+    }
+    // }
+    return visionArray;
+  }
   /*public double[][] getAllObjects() {
   
   double[][] allValues = new double[12][7];
