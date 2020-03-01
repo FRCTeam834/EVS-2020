@@ -1,6 +1,0 @@
-{
-  "targetProtocol": "ssh+docker:",
-  "targetHostname": "pi@192.168.1.13",
-  "targetPath": "alwaysai/FRC_2020",
-  "dockerImageId": "sha256:5c70bfecaa4a4e606be00a590606f00cc7d1e645da13f070bd7bc19cd86b8129"
-}

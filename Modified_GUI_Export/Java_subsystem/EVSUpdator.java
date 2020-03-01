@@ -37,14 +37,15 @@ public class EVSUpdator extends CommandBase {
 
       } else if (Robot.EVSNetworkTables.getGoalArray().get(0).get(1) < 290) {
 
-        System.out.println("turn right");
         Robot.driveTrain.setDrive(.08, -.08);
+        System.out.println("turn right");
 
       }
 
       else {
 
         Robot.driveTrain.stop();
+        
       }
     } catch (Exception e) {
 
