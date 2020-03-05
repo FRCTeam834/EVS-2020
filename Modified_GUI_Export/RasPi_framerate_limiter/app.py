@@ -5,22 +5,22 @@ from cscore import CameraServer
 import logging
 import numpy as np
 import threading
+import queue
 
 # Set up variables
 default_conf_thres = .25  # Decimal version of the percentage
 max_framerate = 10
-marked_frame = None
-unmarked_frame = None
 EVS = None
 start_streaming = False
 
+# Create the queues for the unmarked and marked images
+unmarked_queue = queue.LifoQueue()
+marked_queue = queue.LifoQueue()
 
 # Setup NetworkTables
 def visionProcessing():
 
     # Load in all of the universal variables
-    global marked_frame
-    global unmarked_frame
     global EVS
     global start_streaming
 
@@ -92,6 +92,9 @@ def visionProcessing():
 
                 # Pull a frame from the camera
                 unmarked_frame = video_stream.read()
+                if unmarked_queue.qsize() >= 2:
+                    temp = unmarked_queue.get()
+                unmarked_queue.put(unmarked_frame)
 
                 # Check to see if the camera should be processing images
                 if (EVS.getBoolean('run_vision_tracking', True)):
@@ -159,6 +162,9 @@ def visionProcessing():
 
                     # Do the frame labeling last, as it is lower priority
                     marked_frame = edgeiq.markup_image(unmarked_frame, results.predictions, colors=colors)
+                    if marked_queue.qsize() >= 2:
+                        temp = marked_queue.get()
+                    marked_queue.put(marked_frame)
     
     finally:
         print('Program ending')
@@ -166,8 +172,6 @@ def visionProcessing():
 
 def stream():
     # Load all of the universal variables
-    global marked_frame
-    global unmarked_frame
     global max_framerate
     global EVS
 
@@ -187,11 +191,19 @@ def stream():
 
         # Stream the images. Unmarked frames if vision isn't running, marked if it is
         if (EVS.getBoolean('run_vision_tracking', True)):
-            if type(marked_frame) != None:
-                outputStream.putFrame(marked_frame)
+            if not marked_queue.empty():
+                try:
+                    marked_frame = marked_queue.get()
+                    outputStream.putFrame(marked_frame)
+                except:
+                    outputStream.putFrame(marked_frame)
         else:
-            if type(unmarked_frame) != None:
-                outputStream.putFrame(unmarked_frame)
+            if not unmarked_queue.empty():
+                try:
+                    unmarked_frame = unmarked_queue.get()
+                    outputStream.putFrame(unmarked_frame)
+                except:
+                    outputStream.putFrame(unmarked_frame)
 
         # Get the ending time
         end_time = time.time()
@@ -207,6 +219,7 @@ def stream():
 
 
 def main():
+
     # Make a counter so it's easier to see if the processing is running
     counter = 0
 
