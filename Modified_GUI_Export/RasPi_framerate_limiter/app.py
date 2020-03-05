@@ -10,6 +10,8 @@ import queue
 # Set up variables
 default_conf_thres = .25  # Decimal version of the percentage
 max_framerate = 10
+default_width = 640
+default_height = 320
 EVS = None
 start_streaming = False
 
@@ -183,17 +185,21 @@ def stream():
         # Get the starting time
         start_time = time.time()
 
-        # Get the latest framerate from NetworkTables
+        # Get the latest streaming settings from NetworkTables
         max_framerate = EVS.getNumber('max_framerate', max_framerate)
+        width = EVS.getNumber('stream_width', default_width)
+        height = EVS.getNumber('stream_height', default_height)
 
         # Calculated the desired frame time
         desired_frame_time = 1 / max_framerate
+
 
         # Stream the images. Unmarked frames if vision isn't running, marked if it is
         if (EVS.getBoolean('run_vision_tracking', True)):
             if not marked_queue.empty():
                 try:
                     marked_frame = marked_queue.get()
+                    marked_frame = edgeiq.resize(marked_frame, width, height)
                     outputStream.putFrame(marked_frame)
                 except:
                     outputStream.putFrame(marked_frame)
@@ -201,6 +207,7 @@ def stream():
             if not unmarked_queue.empty():
                 try:
                     unmarked_frame = unmarked_queue.get()
+                    unmarked_frame = edgeiq.resize(unmarked_frame, width, height)
                     outputStream.putFrame(unmarked_frame)
                 except:
                     outputStream.putFrame(unmarked_frame)
@@ -235,13 +242,15 @@ def main():
     # Create table for values
     EVS = NetworkTables.getTable('EVS')
 
-    # Set default run_vision_tracking value
+    # Set up the NetworkTables values
     EVS.putBoolean('run_vision_tracking', True)
     EVS.putNumber('confidence_thres', default_conf_thres)
     EVS.putNumber('max_framerate', max_framerate)
+    EVS.putNumber('stream_width', default_width)
+    EVS.putNumber('stream_height', default_height)
 
     # Create the processing frames
-    visionProcessingThread = threading.Thread(target = visionProcessing, daemon=True)
+    visionProcessingThread = threading.Thread(target = visionProcessing, daemon = True)
     streamingThread = threading.Thread(target = stream, daemon = True)
 
     # Start both of the processing frames
