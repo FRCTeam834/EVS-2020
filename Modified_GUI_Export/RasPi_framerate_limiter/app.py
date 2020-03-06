@@ -5,7 +5,7 @@ from cscore import CameraServer
 import logging
 import numpy as np
 import threading
-import queue
+from collections import deque
 
 # Set up variables
 default_conf_thres = .25  # Decimal version of the percentage
@@ -16,8 +16,8 @@ EVS = None
 start_streaming = False
 
 # Create the queues for the unmarked and marked images
-unmarked_queue = queue.LifoQueue()
-marked_queue = queue.LifoQueue()
+unmarked_queue = deque(maxlen=2)
+marked_queue = deque(maxlen=2)
 
 # Setup NetworkTables
 def visionProcessing():
@@ -94,9 +94,7 @@ def visionProcessing():
 
                 # Pull a frame from the camera
                 unmarked_frame = video_stream.read()
-                if unmarked_queue.qsize() >= 2:
-                    temp = unmarked_queue.get()
-                unmarked_queue.put(unmarked_frame)
+                unmarked_queue.appendleft(unmarked_frame)
 
                 # Check to see if the camera should be processing images
                 if (EVS.getBoolean('run_vision_tracking', True)):
@@ -164,9 +162,7 @@ def visionProcessing():
 
                     # Do the frame labeling last, as it is lower priority
                     marked_frame = edgeiq.markup_image(unmarked_frame, results.predictions, colors=colors)
-                    if marked_queue.qsize() >= 2:
-                        temp = marked_queue.get()
-                    marked_queue.put(marked_frame)
+                    marked_queue.appendleft(marked_frame)
     
     finally:
         print('Program ending')
@@ -196,21 +192,23 @@ def stream():
 
         # Stream the images. Unmarked frames if vision isn't running, marked if it is
         if (EVS.getBoolean('run_vision_tracking', True)):
-            if not marked_queue.empty():
-                try:
-                    marked_frame = marked_queue.get()
-                    marked_frame = edgeiq.resize(marked_frame, width, height)
-                    outputStream.putFrame(marked_frame)
-                except:
-                    outputStream.putFrame(marked_frame)
+            try:
+                marked_frame = marked_queue.pop()
+                marked_frame = edgeiq.resize(marked_frame, width, height)
+                outputStream.putFrame(marked_frame)
+            except IndexError:
+                # Queue is empty
+                # Other options would be to skip the rest of the loop or wait
+                # for an item to be added to the queue
+                pass
         else:
-            if not unmarked_queue.empty():
-                try:
-                    unmarked_frame = unmarked_queue.get()
-                    unmarked_frame = edgeiq.resize(unmarked_frame, width, height)
-                    outputStream.putFrame(unmarked_frame)
-                except:
-                    outputStream.putFrame(unmarked_frame)
+            try:
+                unmarked_frame = unmarked_queue.pop()
+                unmarked_frame = edgeiq.resize(unmarked_frame, width, height)
+                outputStream.putFrame(unmarked_frame)
+            except IndexError:
+                # Queue is empty
+                pass
 
         # Get the ending time
         end_time = time.time()
