@@ -1,0 +1,46 @@
+{
+  "accuracy": "missing",
+  "created_at": "1582760871262",
+  "deleted": false,
+  "description": "The second iteration of the gamepiece model. More description coming soon",
+  "final": true,
+  "deprecated": false,
+  "id": "CAP1Sup/FRC_2020_834_v2",
+  "inference_time": -1,
+  "failed": false,
+  "license": "GNU",
+  "mean_average_precision_top_1": 0,
+  "mean_average_precision_top_5": 0,
+  "model_parameters": {
+    "framework_type": "tensorflow",
+    "config_file": "ssd_mobilenet.pbtxt",
+    "size": [
+      300,
+      300
+    ],
+    "model_file": "ssd_mobilenet_frc2020_v2.pb",
+    "label_file": "labels.txt",
+    "scalefactor": 1,
+    "mean": [
+      0,
+      0,
+      0
+    ],
+    "crop": false,
+    "purpose": "ObjectDetection",
+    "swaprb": false,
+    "label_uuid": "6c0b6de0-1506-4a40-bc4f-bc04ca103408",
+    "colors_uuid": "",
+    "model_uuid": "555beb27-f0b1-49be-8096-54e992b3c98a",
+    "config_uuid": "5f792d08-d2e1-4bdb-81ee-dd3a9baf7ebe",
+    "colors_file": null
+  },
+  "public": false,
+  "size": 22807552,
+  "updated_at": "",
+  "uuid": "",
+  "version": 6,
+  "website_url": "",
+  "dataset": "",
+  "dataset_url": ""
+}

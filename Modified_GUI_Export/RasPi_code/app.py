@@ -7,9 +7,16 @@ import numpy as np
 
 # Constant for the default confidence (0 being 0% sure and 1 being 100% sure)
 default_conf_thres = .25
-
+default_width = 640
+default_height = 320
+max_framerate = 10
+counter = 0
 
 def main():
+
+    global counter
+    global max_framerate
+
     # Allow Rio to boot and configure network
     time.sleep(10.0)
 
@@ -26,6 +33,9 @@ def main():
     # Set default run_vision_tracking value
     EVS.putBoolean('run_vision_tracking', True)
     EVS.putNumber('confidence_thres', default_conf_thres)
+    EVS.putNumber('max_framerate', max_framerate)
+    EVS.putNumber('stream_width', default_width)
+    EVS.putNumber('stream_height', default_height)
 
     # Create sub-tables and append them to arrays
     Power_CellTables = []
@@ -97,6 +107,8 @@ def main():
 
             for i in range(0,0): 
                 GoalTables[i].putBoolean('inUse', False)
+
+            last_update_time = time.time()
 
             # loop detection
             while True:
@@ -174,8 +186,30 @@ def main():
                     # Update the FPS tracker
                     fps.update()
 
-                # Put stream on regardless of vision activation
-                outputStream.putFrame(frame)
+                
+                # Get the parameters for streaming
+                max_framerate = EVS.getNumber('max_framerate', max_framerate)
+                width = EVS.getNumber('stream_width', default_width)
+                height = EVS.getNumber('stream_height', default_height)
+
+                # Calculated the desired frame time
+                desired_frame_time = 1 / max_framerate
+
+                # Take the last update time from the current time. It gives the time since the last frame. 
+                # If the time is larger, than we should stream, otherwise skip streaming the frame.
+                if (time.time() - last_update_time >= desired_frame_time):
+    
+                    # Time to stream a frame!
+
+                    # Resize to the desired size
+                    frame = edgeiq.resize(frame, width, height)
+
+                    # Put the frame out to the stream
+                    outputStream.putFrame(frame)
+
+                    # Update the last update time
+                    last_update_time = time.time()
+
     finally:
         fps.stop()
         print("elapsed time: {:.2f}".format(fps.get_elapsed_seconds()))

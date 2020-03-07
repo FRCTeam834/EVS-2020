@@ -14,6 +14,7 @@ default_width = 640
 default_height = 320
 EVS = None
 start_streaming = False
+counter = 0
 
 # Create the queues for the unmarked and marked images
 unmarked_queue = deque(maxlen=2)
@@ -172,6 +173,7 @@ def stream():
     # Load all of the universal variables
     global max_framerate
     global EVS
+    global counter
 
     # Setup video cam feed
     cs = CameraServer.getInstance()
@@ -186,7 +188,7 @@ def stream():
         width = EVS.getNumber('stream_width', default_width)
         height = EVS.getNumber('stream_height', default_height)
 
-        # Calculated the desired frame time
+        # Calculate the desired frame time
         desired_frame_time = 1 / max_framerate
 
 
@@ -196,6 +198,7 @@ def stream():
                 marked_frame = marked_queue.pop()
                 marked_frame = edgeiq.resize(marked_frame, width, height)
                 outputStream.putFrame(marked_frame)
+                counter = counter + 1
             except IndexError:
                 # Queue is empty
                 # Other options would be to skip the rest of the loop or wait
@@ -206,6 +209,7 @@ def stream():
                 unmarked_frame = unmarked_queue.pop()
                 unmarked_frame = edgeiq.resize(unmarked_frame, width, height)
                 outputStream.putFrame(unmarked_frame)
+                counter = counter + 1
             except IndexError:
                 # Queue is empty
                 pass
@@ -226,7 +230,7 @@ def stream():
 def main():
 
     # Make a counter so it's easier to see if the processing is running
-    counter = 0
+    global counter
 
     # Allow Rio to boot and configure network
     time.sleep(10.0)
@@ -248,8 +252,8 @@ def main():
     EVS.putNumber('stream_height', default_height)
 
     # Create the processing frames
-    visionProcessingThread = threading.Thread(target = visionProcessing, daemon = True)
-    streamingThread = threading.Thread(target = stream, daemon = True)
+    visionProcessingThread = threading.Thread(target = visionProcessing)
+    streamingThread = threading.Thread(target = stream)
 
     # Start both of the processing frames
     visionProcessingThread.start()
@@ -258,7 +262,6 @@ def main():
     # Prevent the program from exiting so that the threads can run. Also, keep printing to show the program is running
     while True:
         print("Still running. Counter: " + str(counter))
-        counter =+ 1
 
 if __name__ == "__main__":
     main()

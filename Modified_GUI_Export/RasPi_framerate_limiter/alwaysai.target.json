@@ -1,0 +1,6 @@
+{
+  "targetProtocol": "ssh+docker:",
+  "targetHostname": "pi@10.0.1.78",
+  "targetPath": "alwaysai/RasPi_framerate_limiter",
+  "dockerImageId": "sha256:5c70bfecaa4a4e606be00a590606f00cc7d1e645da13f070bd7bc19cd86b8129"
+}
