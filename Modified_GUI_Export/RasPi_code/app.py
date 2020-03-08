@@ -7,6 +7,8 @@ import numpy as np
 
 # Constant for the default confidence (0 being 0% sure and 1 being 100% sure)
 default_conf_thres = .25
+default_width = 640
+default_height = 320
 
 
 def main():
@@ -23,9 +25,11 @@ def main():
     EVS = NetworkTables.getTable('EVS')
     sd = NetworkTables.getTable('SmartDashboard')
 
-    # Set default run_vision_tracking value
+    # Set default values
     EVS.putBoolean('run_vision_tracking', True)
     EVS.putNumber('confidence_thres', default_conf_thres)
+    EVS.putNumber('stream_width', default_width)
+    EVS.putNumber('stream_height', default_height)
 
     # Create sub-tables and append them to arrays
     Power_CellTables = []
@@ -168,14 +172,23 @@ def main():
                     # Notify the Rio that vision processing is done, and the data is valid again
                     EVS.putBoolean('checked', False)
 
+
                     # Do the frame labeling last, as it is lower priority
                     frame = edgeiq.markup_image(frame, results.predictions, colors=colors)
 
-                    # Update the FPS tracker
-                    fps.update()
+
+                # Get the streaming parameters
+                width = EVS.getNumber('stream_width', default_width)
+                height = EVS.getNumber('stream_height', default_height)
+
+                # Resize the frame to the correct size
+                frame = edgeiq.resize(frame, width, height)
 
                 # Put stream on regardless of vision activation
                 outputStream.putFrame(frame)
+                
+                # Update the FPS tracker
+                fps.update()
     finally:
         fps.stop()
         print("elapsed time: {:.2f}".format(fps.get_elapsed_seconds()))
