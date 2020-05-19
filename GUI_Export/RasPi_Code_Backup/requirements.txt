@@ -1,2 +1,0 @@
-pyfrc
-pynetworktables
