@@ -23,7 +23,7 @@ def main():
 
     # Wait for the Pi to connect to the Rio
     while(not NetworkTables.isConnected()):
-        pass
+        time.sleep(0.5)
     
     # Set the update rate too slow so it doesn't mess with the flush commands
     NetworkTables.setUpdateRate(1)
